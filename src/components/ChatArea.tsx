@@ -1,5 +1,4 @@
 import React from 'react';
-import { HiOutlineUser, HiOutlineSparkles } from 'react-icons/hi';
 
 interface Message {
   id: string;
@@ -17,31 +16,30 @@ const ChatArea: React.FC = () => {
 
   return (
     <div className="flex-1 overflow-y-auto px-2 py-4 md:px-8 md:py-8 bg-white dark:bg-neutral-900 transition-colors">
-      <div className="max-w-3xl mx-auto space-y-4 md:space-y-8">
+      <div className="max-w-3xl mx-auto flex flex-col space-y-4 md:space-y-6">
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`flex gap-3 md:gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500 ${
-              msg.role === 'assistant' ? 'bg-neutral-50/80 dark:bg-neutral-800/20 p-4 md:p-6 rounded-2xl md:rounded-3xl border border-neutral-100 dark:border-neutral-800' : 'px-2 md:px-0'
+            className={`flex flex-col max-w-[85%] md:max-w-[80%] animate-in fade-in slide-in-from-bottom-2 duration-500 ${
+              msg.role === 'user' ? 'self-end' : 'self-start'
             }`}
           >
             <div
-              className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${
-                msg.role === 'assistant'
-                  ? 'bg-linear-to-br from-blue-500 to-purple-600 text-white shadow-blue-500/20'
-                  : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400'
-              }`}
+              className={
+                msg.role === 'user'
+                  ? 'p-4 md:p-5 rounded-2xl md:rounded-3xl bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200'
+                  : 'p-2 md:p-3 text-neutral-800 dark:text-neutral-200'
+              }
             >
-              {msg.role === 'assistant' ? <HiOutlineSparkles size={18} /> : <HiOutlineUser size={18} />}
-            </div>
-            <div className="flex-1 space-y-2 pt-1 border-0">
-              <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest pl-1">
-                {msg.role === 'assistant' ? 'AI Assistant' : 'You'}
-              </p>
-              <div className="text-neutral-800 dark:text-neutral-200 leading-relaxed text-sm md:text-base pl-1">
+              <div className="text-sm md:text-base leading-relaxed">
                 {msg.content}
               </div>
             </div>
+            <p className={`text-[10px] font-bold text-neutral-400 uppercase tracking-widest mt-1 px-2 ${
+              msg.role === 'user' ? 'text-right' : 'text-left'
+            }`}>
+              {msg.role === 'assistant' ? 'AI Assistant' : 'You'}
+            </p>
           </div>
         ))}
       </div>
