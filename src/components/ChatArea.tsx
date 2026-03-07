@@ -16,13 +16,13 @@ const ChatArea: React.FC = () => {
   ];
 
   return (
-    <div className="flex-1 overflow-y-auto px-4 py-8 md:px-8 bg-white dark:bg-neutral-900 transition-colors">
-      <div className="max-w-3xl mx-auto space-y-8">
+    <div className="flex-1 overflow-y-auto px-2 py-4 md:px-8 md:py-8 bg-white dark:bg-neutral-900 transition-colors">
+      <div className="max-w-3xl mx-auto space-y-4 md:space-y-8">
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`flex gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500 ${
-              msg.role === 'assistant' ? 'bg-neutral-50/80 dark:bg-neutral-800/20 p-6 rounded-3xl border border-neutral-100 dark:border-neutral-800' : ''
+            className={`flex gap-3 md:gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500 ${
+              msg.role === 'assistant' ? 'bg-neutral-50/80 dark:bg-neutral-800/20 p-4 md:p-6 rounded-2xl md:rounded-3xl border border-neutral-100 dark:border-neutral-800' : 'px-2 md:px-0'
             }`}
           >
             <div
