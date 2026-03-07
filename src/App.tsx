@@ -1,18 +1,37 @@
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import { ThemeProvider } from './context/ThemeContext';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import ChatArea from './components/ChatArea';
+import MessageInput from './components/MessageInput';
+
+function AppContent() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  return (
+    <div className="flex flex-col h-screen bg-white dark:bg-neutral-900 transition-colors duration-300 overflow-hidden">
+      <Navbar />
+      <div className="flex flex-1 relative overflow-hidden">
+        {/* Sidebar */}
+        <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+
+        {/* Main Content */}
+        <main className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
+          <ChatArea />
+          <MessageInput />
+        </main>
+      </div>
+    </div>
+  );
+}
 
 function App() {
   return (
-    <div className="min-h-screen bg-neutral-900 text-white flex items-center justify-center p-4">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-          AI Chat Clone
-        </h1>
-        <p className="mt-4 text-neutral-400">
-          Backend services and UI organization pending.
-        </p>
-      </div>
-    </div>
-  )
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
