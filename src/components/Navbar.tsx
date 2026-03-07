@@ -1,5 +1,6 @@
 import React from 'react';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
+import { HiOutlineUserCircle } from 'react-icons/hi';
 import { useTheme } from '../context/ThemeContext';
 
 const Navbar: React.FC = () => {
@@ -13,13 +14,17 @@ const Navbar: React.FC = () => {
         </h1>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <button
           onClick={toggleTheme}
-          className="p-2 cursor-pointer rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-neutral-600 dark:text-neutral-400"
+          className="p-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-neutral-600 dark:text-neutral-400 cursor-pointer"
           aria-label="Toggle theme"
         >
-          {theme === 'light' ? <IoMdMoon size={24} /> : <IoMdSunny size={24} />}
+          {theme === 'light' ? <IoMdMoon size={22} /> : <IoMdSunny size={22} />}
+        </button>
+        
+        <button className="flex items-center gap-2 p-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-neutral-600 dark:text-neutral-400 cursor-pointer group">
+          <HiOutlineUserCircle size={26} className="group-hover:text-blue-500 transition-colors" />
         </button>
       </div>
     </nav>
