@@ -6,7 +6,7 @@ interface SidebarProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
+const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   return (
     <aside
       className={`fixed left-0 top-16 bottom-0 z-40 w-64 bg-neutral-50 dark:bg-neutral-950 border-r border-neutral-200 dark:border-neutral-800 transition-transform duration-300 ease-in-out ${
