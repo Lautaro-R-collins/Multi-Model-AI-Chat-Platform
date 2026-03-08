@@ -6,7 +6,7 @@ interface Message {
   content: string;
 }
 
-const ChatArea: React.FC = () => {
+const ChatArea = () => {
   // Static example for UI/UX demonstration
   const messages: Message[] = [
     { id: '1', role: 'assistant', content: "Hello! I'm your AI assistant. How can I help you today?" },
