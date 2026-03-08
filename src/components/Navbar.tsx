@@ -3,7 +3,7 @@ import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { HiOutlineUserCircle } from 'react-icons/hi';
 import { useTheme } from '../context/ThemeContext';
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
