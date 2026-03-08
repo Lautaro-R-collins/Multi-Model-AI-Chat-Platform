@@ -1,7 +1,7 @@
 import React from 'react';
 import { HiOutlineArrowUp, HiOutlinePaperClip, HiOutlineEmojiHappy } from 'react-icons/hi';
 
-const MessageInput: React.FC = () => {
+const MessageInput = () => {
   return (
     <div className="p-4 md:p-6 bg-white dark:bg-neutral-900">
       <div className="max-w-3xl mx-auto relative group">
