@@ -1,5 +1,5 @@
-import './App.css';
 import { ThemeProvider } from './context/ThemeContext';
+import { ChatProvider } from './context/ChatContext';
 import MainLayout from './layouts/MainLayout';
 import ChatArea from './components/ChatArea';
 import MessageInput from './components/MessageInput';
@@ -7,10 +7,12 @@ import MessageInput from './components/MessageInput';
 function App() {
   return (
     <ThemeProvider>
-      <MainLayout>
-        <ChatArea />
-        <MessageInput />
-      </MainLayout>
+      <ChatProvider>
+        <MainLayout>
+          <ChatArea />
+          <MessageInput />
+        </MainLayout>
+      </ChatProvider>
     </ThemeProvider>
   );
 }
