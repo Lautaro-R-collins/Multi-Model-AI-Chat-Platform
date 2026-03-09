@@ -1,19 +1,12 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
-import type { Message, ChatState } from '../types/chat';
+import { useState, type ReactNode } from 'react';
+import type { Message, ChatState, AIModel } from '../types/chat';
 import { sendMessageToAI } from '../services/aiService';
-
-interface ChatContextType extends ChatState {
-  sendMessage: (content: string) => Promise<void>;
-  clearChat: () => void;
-}
-
-const ChatContext = createContext<ChatContextType | undefined>(undefined);
+import { ChatContext } from './ChatContextInstance';
 
 export const ChatProvider = ({ children }: { children: ReactNode }) => {
+  const [selectedModel, setSelectedModel] = useState<AIModel>('llama-3.3-70b-versatile');
   const [state, setState] = useState<ChatState>({
-    messages: [
-      { id: '1', role: 'assistant', content: "Hello! I'm your AI assistant. How can I help you today?", timestamp: 1710000000000 }
-    ],
+    messages: [],
     isLoading: false,
     error: null,
   });
@@ -34,7 +27,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     }));
 
     try {
-      const aiResponse = await sendMessageToAI([...state.messages, userMessage]);
+      const aiResponse = await sendMessageToAI([...state.messages, userMessage], selectedModel);
       
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -67,16 +60,8 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ChatContext.Provider value={{ ...state, sendMessage, clearChat }}>
+    <ChatContext.Provider value={{ ...state, sendMessage, clearChat, selectedModel, setSelectedModel }}>
       {children}
     </ChatContext.Provider>
   );
-};
-
-export const useChat = () => {
-  const context = useContext(ChatContext);
-  if (context === undefined) {
-    throw new Error('useChat must be used within a ChatProvider');
-  }
-  return context;
 };
