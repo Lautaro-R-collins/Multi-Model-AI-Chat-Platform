@@ -3,7 +3,7 @@ import type { Message } from '../types/chat';
 const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
 const API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
-export const sendMessageToAI = async (messages: Message[]) => {
+export const sendMessageToAI = async (messages: Message[], model: string = 'llama-3.3-70b-versatile') => {
   if (!API_KEY) {
     throw new Error('Groq API Key is missing. Please add VITE_GROQ_API_KEY to your .env file.');
   }
@@ -15,7 +15,7 @@ export const sendMessageToAI = async (messages: Message[]) => {
       'Authorization': `Bearer ${API_KEY}`,
     },
     body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
+      model,
       messages: messages.map(({ role, content }) => ({ role, content })),
       temperature: 0.7,
     }),
