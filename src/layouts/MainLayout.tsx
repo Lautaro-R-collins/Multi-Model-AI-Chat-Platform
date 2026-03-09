@@ -36,7 +36,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
         {/* Main Content */}
-        <main className={`flex-1 flex flex-col transition-all duration-300 overflow-hidden ${isSidebarOpen ? 'md:ml-64' : 'ml-0'}`}>
+        <main className={`flex-1 flex flex-col transition-all duration-300 overflow-hidden pt-16 ${isSidebarOpen ? 'md:ml-64' : 'ml-0'}`}>
           {children}
         </main>
       </div>
