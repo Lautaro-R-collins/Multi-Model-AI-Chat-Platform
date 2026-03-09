@@ -1,4 +1,3 @@
-import React from 'react';
 import { HiOutlineChevronRight, HiOutlineChatAlt2, HiOutlinePlus } from 'react-icons/hi';
 
 interface SidebarProps {
@@ -52,7 +51,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`absolute top-1/2 -right-4 -translate-y-1/2 w-8 h-8 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-full flex items-center justify-center shadow-lg text-neutral-500 hover:text-blue-500 transition-all cursor-pointer ${
+        className={`absolute top-1/2 -right-4 -translate-y-1/2 w-8 h-8 bg-white dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-full flex items-center justify-center shadow-lg text-neutral-500 hover:text-blue-500 transition-all cursor-pointer ${
           isOpen ? 'rotate-180' : ''
         }`}
       >
