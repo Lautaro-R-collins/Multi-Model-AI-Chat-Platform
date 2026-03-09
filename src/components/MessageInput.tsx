@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { HiOutlineArrowUp, HiOutlinePaperClip, HiOutlineEmojiHappy } from 'react-icons/hi';
-import { useChat } from '../context/ChatContext';
+import { useChat } from '../hooks/useChat';
 
 const MessageInput = () => {
   const [content, setContent] = useState('');
@@ -28,7 +28,7 @@ const MessageInput = () => {
   };
 
   return (
-    <div className="p-4 md:p-6 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800">
+    <div className="p-4 md:p-6 bg-white dark:bg-neutral-900">
       <div className="max-w-3xl mx-auto relative group">
         <form 
           onSubmit={handleSubmit}
