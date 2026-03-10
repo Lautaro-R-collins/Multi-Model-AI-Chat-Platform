@@ -11,10 +11,8 @@ const Navbar = () => {
   const [isModelMenuOpen, setIsModelMenuOpen] = useState(false);
 
   const models: { id: AIModel; name: string; desc: string }[] = [
-    { id: 'llama-3.3-70b-versatile', name: 'Llama 3.3 70B', desc: 'Versatile & Smart' },
-    { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B', desc: 'MoE Architecture' },
-    { id: 'gemma2-9b-it', name: 'Gemma 2 9B', desc: 'Google Optimized' },
-    { id: 'deepseek-r1-distill-llama-70b', name: 'DeepSeek R1', desc: 'Reasoning Focus' },
+    { id: 'llama-3.3-70b-versatile', name: 'Llama 3.3 70B', desc: 'Más inteligente y versátil' },
+    { id: 'llama-3.1-8b-instant', name: 'Llama 3.1 8B', desc: 'Ultra rápido y eficiente' },
   ];
 
   const currentModelName = models.find(m => m.id === selectedModel)?.name || 'Select Model';
