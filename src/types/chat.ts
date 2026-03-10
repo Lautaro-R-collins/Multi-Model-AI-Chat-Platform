@@ -9,15 +9,28 @@ export interface Message {
   timestamp: number;
 }
 
-export interface ChatState {
+export interface Conversation {
+  id: string;
+  title: string;
   messages: Message[];
+  model: AIModel;
+  timestamp: number;
+}
+
+export interface ChatState {
+  chats: Conversation[];
+  activeChatId: string | null;
   isLoading: boolean;
   error: string | null;
 }
 
 export interface ChatContextType extends ChatState {
+  messages: Message[];
   sendMessage: (content: string) => Promise<void>;
   clearChat: () => void;
+  createNewChat: () => void;
+  switchChat: (id: string) => void;
+  deleteChat: (id: string) => void;
   selectedModel: AIModel;
   setSelectedModel: (model: AIModel) => void;
 }
