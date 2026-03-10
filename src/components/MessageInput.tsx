@@ -48,7 +48,7 @@ const MessageInput = () => {
             onChange={(e) => setContent(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ask anything..."
-            className="flex-1 bg-transparent border-none focus:ring-0 resize-none py-2 text-neutral-700 dark:text-neutral-200 placeholder-neutral-500 max-h-48 text-sm md:text-base min-w-0"
+            className="flex-1 bg-transparent border-none focus:ring-0 outline-hidden resize-none py-2 text-neutral-700 dark:text-neutral-200 placeholder-neutral-500 max-h-48 text-sm md:text-base min-w-0"
             onInput={(e) => {
               const target = e.target as HTMLTextAreaElement;
               target.style.height = 'auto';
