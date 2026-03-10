@@ -1,9 +1,18 @@
-
+import { useRef, useEffect } from 'react';
 import { useChat } from '../hooks/useChat';
 import { HiOutlineSparkles, HiOutlineChatAlt2, HiOutlineCode, HiOutlineLightBulb } from 'react-icons/hi';
 
 const ChatArea = () => {
-  const { messages, isLoading, error } = useChat();
+  const { messages, isLoading, error, sendMessage } = useChat();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isLoading]);
 
   if (messages.length === 0 && !isLoading) {
     return (
@@ -20,10 +29,11 @@ const ChatArea = () => {
             { icon: HiOutlineChatAlt2, text: "Cuéntame un dato curioso sobre el espacio" },
             { icon: HiOutlineCode, text: "¿Cómo puedo centrar un div en CSS?" },
             { icon: HiOutlineLightBulb, text: "Dame ideas para un proyecto de React" },
-            { icon: HiOutlineSparkles, text: "Escribe un poema sobre la tecnología" }
+            { icon: HiOutlineSparkles, text: "Escribe un poema" }
           ].map((item, i) => (
             <div 
               key={i}
+              onClick={() => sendMessage(item.text)}
               className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-800/50 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-all cursor-pointer flex items-center gap-3 text-left group"
             >
               <item.icon className="text-neutral-400 group-hover:text-blue-500 transition-colors" />
@@ -81,6 +91,7 @@ const ChatArea = () => {
             {error}
           </div>
         )}
+        <div ref={messagesEndRef} className="h-4" />
       </div>
     </div>
   );
