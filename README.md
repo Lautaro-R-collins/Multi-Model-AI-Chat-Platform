@@ -2,6 +2,9 @@
 
 A full-stack web application designed to provide a seamless interface for interacting with multiple Large Language Models (LLMs) via the Groq API. This project features a robust authentication system, persistent chat history, and a specialized temporary chat mode for enhanced privacy.
 
+<img width="1366" height="642" alt="ChatAI" src="https://github.com/user-attachments/assets/6368ee47-f64e-4cf7-aab9-f766f26cd532" />
+
+
 ## Project Structure
 
 The project is organized as a monorepo to separate concerns between the server-side logic and the user interface while maintaining a unified development environment.
