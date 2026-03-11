@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import { useChat } from '../hooks/useChat';
+import { useChat } from '../../hooks/useChat';
 import { HiOutlineSparkles, HiOutlineChatAlt2, HiOutlineCode, HiOutlineLightBulb } from 'react-icons/hi';
 
 const ChatArea = () => {

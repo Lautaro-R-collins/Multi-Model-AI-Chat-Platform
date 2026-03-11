@@ -1,6 +1,6 @@
 import { HiOutlineChevronRight, HiOutlineChatAlt2, HiOutlinePlus, HiOutlineTrash } from 'react-icons/hi';
-import { useChat } from '../hooks/useChat';
-import { useAuth } from '../context/AuthContext';
+import { useChat } from '../../hooks/useChat';
+import { useAuth } from '../../context/AuthContext';
 
 interface SidebarProps {
   isOpen: boolean;

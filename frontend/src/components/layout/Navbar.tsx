@@ -1,10 +1,10 @@
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { HiOutlineUserCircle, HiOutlineServer, HiChevronDown, HiOutlineLogout } from 'react-icons/hi';
-import { useTheme } from '../hooks/useTheme';
-import { useChat } from '../hooks/useChat';
-import { useAuth } from '../context/AuthContext';
-import AuthModal from './auth/AuthModal';
-import type { AIModel } from '../types/chat';
+import { useTheme } from '../../hooks/useTheme';
+import { useChat } from '../../hooks/useChat';
+import { useAuth } from '../../context/AuthContext';
+import AuthModal from '../auth/AuthModal';
+import type { AIModel } from '../../types/chat';
 import { useState } from 'react';
 
 const Navbar = () => {

@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { HiOutlineArrowUp, HiOutlinePaperClip, HiOutlineEmojiHappy } from 'react-icons/hi';
-import { useChat } from '../hooks/useChat';
+import { useChat } from '../../hooks/useChat';
 
 const MessageInput = () => {
   const [content, setContent] = useState('');
