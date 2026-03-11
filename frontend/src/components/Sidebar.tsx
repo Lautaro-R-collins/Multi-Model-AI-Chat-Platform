@@ -1,5 +1,6 @@
 import { HiOutlineChevronRight, HiOutlineChatAlt2, HiOutlinePlus, HiOutlineTrash } from 'react-icons/hi';
 import { useChat } from '../hooks/useChat';
+import { useAuth } from '../context/AuthContext';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface SidebarProps {
 
 const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   const { chats, activeChatId, createNewChat, switchChat, deleteChat } = useChat();
+  const { state: { user, isAuthenticated } } = useAuth();
 
   return (
     <aside
@@ -61,12 +63,16 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 
         <div className="p-4 border-t border-neutral-200 dark:border-neutral-800">
           <div className="flex items-center gap-3 p-2 bg-neutral-100 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800">
-            <div className="w-9 h-9 rounded-xl bg-linear-to-br from-neutral-300 to-neutral-400 dark:from-neutral-700 dark:to-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-300 text-xs font-bold shadow-sm">
-              G
+            <div className="w-9 h-9 rounded-xl bg-linear-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 flex items-center justify-center text-white text-sm font-bold shadow-sm">
+              {user?.username?.charAt(0).toUpperCase() || 'I'}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-neutral-800 dark:text-neutral-200 truncate">Guest User</p>
-              <p className="text-[10px] text-neutral-500 truncate uppercase tracking-widest font-bold">Limited Access</p>
+              <p className="text-sm font-semibold text-neutral-800 dark:text-neutral-200 truncate">
+                {isAuthenticated ? user?.username : 'Invitado'}
+              </p>
+              <p className="text-[10px] text-neutral-500 truncate uppercase tracking-widest font-bold">
+                {isAuthenticated ? user?.email : 'Acceso Limitado'}
+              </p>
             </div>
           </div>
         </div>

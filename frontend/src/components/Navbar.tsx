@@ -1,14 +1,19 @@
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
-import { HiOutlineUserCircle, HiOutlineServer, HiChevronDown } from 'react-icons/hi';
+import { HiOutlineUserCircle, HiOutlineServer, HiChevronDown, HiOutlineLogout } from 'react-icons/hi';
 import { useTheme } from '../hooks/useTheme';
 import { useChat } from '../hooks/useChat';
+import { useAuth } from '../context/AuthContext';
+import AuthModal from './auth/AuthModal';
 import type { AIModel } from '../types/chat';
 import { useState } from 'react';
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const { selectedModel, setSelectedModel } = useChat();
+  const { state: { user, isAuthenticated }, logout } = useAuth();
   const [isModelMenuOpen, setIsModelMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
 
   const models: { id: AIModel; name: string; desc: string }[] = [
     { id: 'llama-3.3-70b-versatile', name: 'Llama 3.3 70B', desc: 'Más inteligente y versátil' },
@@ -76,10 +81,38 @@ const Navbar = () => {
           {theme === 'light' ? <IoMdMoon size={22} /> : <IoMdSunny size={22} />}
         </button>
         
-        <button className="flex items-center gap-2 p-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-neutral-600 dark:text-neutral-400 cursor-pointer group">
-          <HiOutlineUserCircle size={26} className="group-hover:text-blue-500 transition-colors" />
-        </button>
+        {isAuthenticated ? (
+          <div className="flex items-center gap-3 ml-2">
+            <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300 hidden sm:block">
+              {user?.username}
+            </span>
+            <button 
+              onClick={logout}
+              className="p-2 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors text-neutral-600 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 cursor-pointer"
+              title="Cerrar sesión"
+            >
+              <HiOutlineLogout size={22} />
+            </button>
+          </div>
+        ) : (
+          <button 
+            onClick={() => {
+              setAuthMode('login');
+              setIsAuthModalOpen(true);
+            }}
+            className="flex items-center gap-2 p-2 px-3 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-neutral-600 dark:text-neutral-400 cursor-pointer group"
+          >
+            <HiOutlineUserCircle size={26} className="group-hover:text-blue-500 transition-colors" />
+            <span className="text-sm font-medium hidden sm:block">Iniciar sesión</span>
+          </button>
+        )}
       </div>
+
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+        initialMode={authMode} 
+      />
     </nav>
   );
 };
