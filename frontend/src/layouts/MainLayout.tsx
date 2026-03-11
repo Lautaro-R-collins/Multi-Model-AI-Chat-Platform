@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/layout/Navbar';
 import Sidebar from '../components/layout/Sidebar';
+import { useChat } from '../hooks/useChat';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -8,6 +9,15 @@ interface MainLayoutProps {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768);
+  const { isTemporaryMode } = useChat();
+
+  // Close sidebar on mobile when temporary mode is started
+  useEffect(() => {
+    if (isTemporaryMode && window.innerWidth <= 768 && isSidebarOpen) {
+      const timer = setTimeout(() => setIsSidebarOpen(false), 0);
+      return () => clearTimeout(timer);
+    }
+  }, [isTemporaryMode, isSidebarOpen]);
 
   useEffect(() => {
     const handleResize = () => {

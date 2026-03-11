@@ -8,7 +8,7 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
-  const { chats, activeChatId, createNewChat, switchChat, deleteChat } = useChat();
+  const { chats, activeChatId, createNewChat, switchChat, deleteChat, isTemporaryMode } = useChat();
   const { state: { user, isAuthenticated } } = useAuth();
 
   return (
@@ -37,7 +37,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
                   <button
                     onClick={() => switchChat(chat.id)}
                     className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-left cursor-pointer pr-10 ${
-                      activeChatId === chat.id 
+                      activeChatId === chat.id && !isTemporaryMode
                         ? 'bg-neutral-200 dark:bg-neutral-800 text-blue-600 dark:text-blue-400' 
                         : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800'
                     }`}

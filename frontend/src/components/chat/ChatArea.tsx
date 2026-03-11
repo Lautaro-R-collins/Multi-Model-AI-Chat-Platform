@@ -3,7 +3,7 @@ import { useChat } from '../../hooks/useChat';
 import { HiOutlineSparkles, HiOutlineChatAlt2, HiOutlineCode, HiOutlineLightBulb } from 'react-icons/hi';
 
 const ChatArea = () => {
-  const { messages, isLoading, error, sendMessage } = useChat();
+  const { messages, isLoading, error, sendMessage, isTemporaryMode } = useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -17,11 +17,22 @@ const ChatArea = () => {
   if (messages.length === 0 && !isLoading) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-700">
+        {isTemporaryMode && (
+          <div className="mb-8 p-3 px-6 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-500">
+            <HiOutlineSparkles className="w-5 h-5" />
+            <div className="text-left">
+              <p className="text-sm font-bold">Chat temporal</p>
+              <p className="text-[11px] opacity-80">Este chat no aparecerá en tu historial y no se usará para entrenar modelos.</p>
+            </div>
+          </div>
+        )}
         <h2 className="text-3xl md:text-4xl font-bold text-neutral-800 dark:text-white mb-4">
-          ¿En qué puedo ayudarte hoy?
+          {isTemporaryMode ? 'Modo Temporal Activo' : '¿En qué puedo ayudarte hoy?'}
         </h2>
         <p className="text-neutral-500 dark:text-neutral-400 max-w-md mb-12 text-lg">
-          Tu asistente de IA está listo.
+          {isTemporaryMode 
+            ? 'Tus mensajes no se guardarán al salir de este modo.' 
+            : 'Tu asistente de IA está listo.'}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl w-full">

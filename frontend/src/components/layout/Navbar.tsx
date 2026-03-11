@@ -1,5 +1,5 @@
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
-import { HiOutlineUserCircle, HiOutlineServer, HiChevronDown, HiOutlineLogout } from 'react-icons/hi';
+import { HiOutlineUserCircle, HiOutlineServer, HiChevronDown, HiOutlineLogout, HiOutlineShieldCheck } from 'react-icons/hi';
 import { useTheme } from '../../hooks/useTheme';
 import { useChat } from '../../hooks/useChat';
 import { useAuth } from '../../context/AuthContext';
@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
-  const { selectedModel, setSelectedModel } = useChat();
+  const { selectedModel, setSelectedModel, isTemporaryMode, startTemporaryChat } = useChat();
   const { state: { user, isAuthenticated }, logout } = useAuth();
   const [isModelMenuOpen, setIsModelMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -79,6 +79,22 @@ const Navbar = () => {
           aria-label="Toggle theme"
         >
           {theme === 'light' ? <IoMdMoon size={22} /> : <IoMdSunny size={22} />}
+        </button>
+
+        {/* Temporary Chat Button */}
+        <button
+          onClick={startTemporaryChat}
+          className={`p-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 group ${
+            isTemporaryMode 
+              ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' 
+              : 'hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-400'
+          }`}
+          title="Modo Temporal (No guarda historial)"
+        >
+          <HiOutlineShieldCheck size={22} className={isTemporaryMode ? 'text-white' : 'group-hover:text-blue-500'} />
+          <span className={`text-xs font-bold hidden lg:block ${isTemporaryMode ? 'text-white' : ''}`}>
+            Chat Temporal
+          </span>
         </button>
         
         {isAuthenticated ? (

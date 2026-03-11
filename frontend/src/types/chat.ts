@@ -20,6 +20,8 @@ export interface Conversation {
 export interface ChatState {
   chats: Conversation[];
   activeChatId: string | null;
+  isTemporaryMode: boolean;
+  temporaryMessages: Message[];
   isLoading: boolean;
   error: string | null;
 }
@@ -29,6 +31,7 @@ export interface ChatContextType extends ChatState {
   sendMessage: (content: string) => Promise<void>;
   clearChat: () => void;
   createNewChat: () => void;
+  startTemporaryChat: () => void;
   switchChat: (id: string) => void;
   deleteChat: (id: string) => void;
   selectedModel: AIModel;
