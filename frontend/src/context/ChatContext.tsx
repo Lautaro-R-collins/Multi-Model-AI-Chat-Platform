@@ -147,9 +147,19 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const startTemporaryChat = () => {
     setState(prev => ({
       ...prev,
-      activeChatId: null,
       isTemporaryMode: true,
       temporaryMessages: [],
+      error: null,
+    }));
+  };
+
+  const stopTemporaryChat = () => {
+    setState(prev => ({
+      ...prev,
+      isTemporaryMode: false,
+      temporaryMessages: [],
+      // If there are chats, pick the first one as active, otherwise null
+      activeChatId: prev.activeChatId || (prev.chats.length > 0 ? prev.chats[0].id : null),
       error: null,
     }));
   };
@@ -360,6 +370,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     clearChat,
     createNewChat,
     startTemporaryChat,
+    stopTemporaryChat,
     switchChat,
     deleteChat,
     selectedModel,

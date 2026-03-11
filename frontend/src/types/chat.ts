@@ -32,6 +32,7 @@ export interface ChatContextType extends ChatState {
   clearChat: () => void;
   createNewChat: () => void;
   startTemporaryChat: () => void;
+  stopTemporaryChat: () => void;
   switchChat: (id: string) => void;
   deleteChat: (id: string) => void;
   selectedModel: AIModel;

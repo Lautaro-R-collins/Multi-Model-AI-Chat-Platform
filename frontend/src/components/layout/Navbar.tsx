@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
-  const { selectedModel, setSelectedModel, isTemporaryMode, startTemporaryChat } = useChat();
+  const { selectedModel, setSelectedModel, isTemporaryMode, startTemporaryChat, stopTemporaryChat } = useChat();
   const { state: { user, isAuthenticated }, logout } = useAuth();
   const [isModelMenuOpen, setIsModelMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -83,7 +83,7 @@ const Navbar = () => {
 
         {/* Temporary Chat Button */}
         <button
-          onClick={startTemporaryChat}
+          onClick={isTemporaryMode ? stopTemporaryChat : startTemporaryChat}
           className={`p-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 group ${
             isTemporaryMode 
               ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' 
