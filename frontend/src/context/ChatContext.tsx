@@ -21,6 +21,8 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     return {
       chats: [],
       activeChatId: null,
+      isTemporaryMode: false,
+      temporaryMessages: [],
       isLoading: false,
       error: null,
     };
@@ -30,7 +32,14 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!auth.isAuthenticated) {
       const { chats, activeChatId } = state;
-      localStorage.setItem('chat_state', JSON.stringify({ chats, activeChatId, isLoading: false, error: null }));
+      localStorage.setItem('chat_state', JSON.stringify({ 
+        chats, 
+        activeChatId, 
+        isTemporaryMode: false, 
+        temporaryMessages: [], 
+        isLoading: false, 
+        error: null 
+      }));
     }
   }, [state, auth.isAuthenticated]);
 
@@ -63,8 +72,9 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
         activeChatId: backendChats.length > 0 ? backendChats[0].id : null,
         isLoading: false,
       }));
-    } catch (err: any) {
-      setState(prev => ({ ...prev, isLoading: false, error: err.message }));
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to fetch chats';
+      setState(prev => ({ ...prev, isLoading: false, error: message }));
     }
   }, [auth.token]);
 
@@ -75,9 +85,13 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
       // Revert to local storage if logged out
       const saved = localStorage.getItem('chat_state');
       if (saved) {
-        setState(JSON.parse(saved));
+        try {
+          setState(JSON.parse(saved));
+        } catch {
+          setState({ chats: [], activeChatId: null, isTemporaryMode: false, temporaryMessages: [], isLoading: false, error: null });
+        }
       } else {
-        setState({ chats: [], activeChatId: null, isLoading: false, error: null });
+        setState({ chats: [], activeChatId: null, isTemporaryMode: false, temporaryMessages: [], isLoading: false, error: null });
       }
     }
   }, [auth.isAuthenticated, fetchChats]);
@@ -130,8 +144,24 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const startTemporaryChat = () => {
+    setState(prev => ({
+      ...prev,
+      activeChatId: null,
+      isTemporaryMode: true,
+      temporaryMessages: [],
+      error: null,
+    }));
+  };
+
   const switchChat = (id: string) => {
-    setState(prev => ({ ...prev, activeChatId: id, error: null }));
+    setState(prev => ({ 
+      ...prev, 
+      activeChatId: id, 
+      isTemporaryMode: false,
+      temporaryMessages: [],
+      error: null 
+    }));
   };
 
   const deleteChat = async (id: string) => {
@@ -179,8 +209,8 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     let currentId = state.activeChatId;
     let isNewChat = false;
     
-    // If no active chat, create one automatically
-    if (!currentId) {
+    // If no active chat and not in temporary mode, create one automatically
+    if (!currentId && !state.isTemporaryMode) {
       const tempId = Date.now().toString();
       const newChat: Conversation = {
         id: tempId,
@@ -210,7 +240,10 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
       ...prev,
       isLoading: true,
       error: null,
-      chats: prev.chats.map(chat => {
+      temporaryMessages: prev.isTemporaryMode 
+        ? [...prev.temporaryMessages, userMessage] 
+        : prev.temporaryMessages,
+      chats: !prev.isTemporaryMode ? prev.chats.map(chat => {
         if (chat.id === currentId) {
           const isFirstMessage = chat.messages.length === 0;
           return {
@@ -220,14 +253,19 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
           };
         }
         return chat;
-      }),
+      }) : prev.chats,
     }));
 
     try {
-      const activeChat = state.chats.find(c => c.id === currentId);
-      const history = activeChat ? activeChat.messages : [];
+      let history: Message[] = [];
+      if (state.isTemporaryMode) {
+        history = [...state.temporaryMessages, userMessage];
+      } else {
+        const activeChat = state.chats.find(c => c.id === currentId);
+        history = activeChat ? [...activeChat.messages, userMessage] : [userMessage];
+      }
       
-      const aiResponse = await sendMessageToAI([...history, userMessage], selectedModel);
+      const aiResponse = await sendMessageToAI(history, selectedModel);
       
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -237,6 +275,14 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
       };
 
       setState(prev => {
+        if (prev.isTemporaryMode) {
+          return {
+            ...prev,
+            isLoading: false,
+            temporaryMessages: [...prev.temporaryMessages, assistantMessage],
+          };
+        }
+
         const updatedChats = prev.chats.map(chat => 
           chat.id === currentId 
             ? { ...chat, messages: [...chat.messages, assistantMessage] } 
@@ -303,8 +349,9 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     if (activeChat) syncChatMessages(state.activeChatId!, []);
   };
 
-  const activeChat = state.chats.find(c => c.id === state.activeChatId);
-  const messages = activeChat ? activeChat.messages : [];
+  const messages = state.isTemporaryMode 
+    ? state.temporaryMessages 
+    : (state.chats.find(c => c.id === state.activeChatId)?.messages || []);
 
   const contextValue: ChatContextType = {
     ...state,
@@ -312,6 +359,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     sendMessage,
     clearChat,
     createNewChat,
+    startTemporaryChat,
     switchChat,
     deleteChat,
     selectedModel,
